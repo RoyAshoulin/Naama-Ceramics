@@ -158,6 +158,13 @@
 
     .card-body { padding: 14px 16px 16px; }
     .card-name  { font-size: 0.95rem; color: var(--text); }
+    .card-price {
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: var(--accent);
+      margin-top: 4px;
+      letter-spacing: 0.02em;
+    }
 
     /* ── LIGHTBOX ── */
     #lightbox {
@@ -193,7 +200,8 @@
       gap: 16px;
     }
     #lightbox-name   { font-size: 1.15rem; }
-    #lightbox-status { font-family: sans-serif; font-size: 0.82rem; margin-top: 5px; }
+    #lightbox-price  { font-family: sans-serif; font-size: 1rem; color: var(--accent); margin-top: 4px; }
+    #lightbox-status { font-family: sans-serif; font-size: 0.82rem; margin-top: 4px; }
     #lightbox-ask {
       flex-shrink: 0;
       padding: 10px 22px;
@@ -328,7 +336,7 @@ const CONFIG = {
     <strong>👋 Setup guide — dismiss once you're done</strong>
     <ol>
       <li>Create 5 folders in Google Drive named exactly: <code>1 unit</code>, <code>2 units</code>, <code>3 units</code>, <code>4 units</code>, <code>sold</code>.</li>
-      <li>Upload your ceramic photos into the right folder. Name each file like <code>blue-bowl.jpg</code> — the filename becomes the piece title on the page.</li>
+      <li>Upload your ceramic photos into the right folder. Name each file like <code>blue bowl_150.jpg</code> — the part before <code>_</code> becomes the title, the number after <code>_</code> becomes the price. If there's no <code>_</code>, the price shows as N/A.</li>
       <li>Share each folder publicly: right-click → <strong>Share</strong> → <strong>"Anyone with the link"</strong> → Viewer.</li>
       <li>Open each folder in your browser and copy its ID from the URL (the part after <code>/folders/</code>). Paste each one into the <code>CONFIG.folderIds</code> section at the top of this file.</li>
       <li>Get a free API key: go to <strong>console.cloud.google.com</strong> → New project → Enable "Google Drive API" → Credentials → Create API Key. Paste it into <code>CONFIG.apiKey</code>.</li>
@@ -359,6 +367,7 @@ const CONFIG = {
     <div id="lightbox-info">
       <div>
         <div id="lightbox-name"></div>
+        <div id="lightbox-price"></div>
         <div id="lightbox-status"></div>
       </div>
       <a id="lightbox-ask" href="#">Ask about this</a>
@@ -391,15 +400,15 @@ function stockStatusText(units) {
 
 // ── Demo cards (shown while CONFIG placeholders are still in place) ───────
 const DEMO_AVAILABLE = [
-  { name: "Stoneware Bowl",  img: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80", units: "3" },
-  { name: "Raku Vase",       img: "https://images.unsplash.com/photo-1620503374956-c942862f0372?w=600&q=80", units: "1" },
-  { name: "Slab Dish",       img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&q=80", units: "2" },
-  { name: "Tea Bowl",        img: "https://images.unsplash.com/photo-1614812513172-567d2fe96a75?w=600&q=80", units: "4" },
-  { name: "Speckled Mug",    img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80", units: "2" },
+  { name: "Stoneware Bowl",  img: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80", units: "3", price: 180 },
+  { name: "Raku Vase",       img: "https://images.unsplash.com/photo-1620503374956-c942862f0372?w=600&q=80", units: "1", price: 320 },
+  { name: "Slab Dish",       img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&q=80", units: "2", price: 'N/A' },
+  { name: "Tea Bowl",        img: "https://images.unsplash.com/photo-1614812513172-567d2fe96a75?w=600&q=80", units: "4", price: 95 },
+  { name: "Speckled Mug",    img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80", units: "2", price: 120 },
 ];
 const DEMO_SOLD = [
-  { name: "Terracotta Pot",  img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=600&q=80", units: "sold" },
-  { name: "Glazed Planter",  img: "https://images.unsplash.com/photo-1602532305019-3dbbd482dae9?w=600&q=80", units: "sold" },
+  { name: "Terracotta Pot",  img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=600&q=80", units: "sold", price: 200 },
+  { name: "Glazed Planter",  img: "https://images.unsplash.com/photo-1602532305019-3dbbd482dae9?w=600&q=80", units: "sold", price: 'N/A' },
 ];
 
 // ── Tab switching ─────────────────────────────────────────────────────────
@@ -411,8 +420,9 @@ function showTab(tab, btn) {
 }
 
 // ── Build a card ──────────────────────────────────────────────────────────
-function makeCard(name, imgSrc, units) {
+function makeCard(name, imgSrc, units, price) {
   const meta = STOCK_META[units];
+  const priceDisplay = price === 'N/A' ? 'N/A' : `₪${price}`;
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `
@@ -422,15 +432,17 @@ function makeCard(name, imgSrc, units) {
     </div>
     <div class="card-body">
       <div class="card-name">${name}</div>
+      <div class="card-price">${priceDisplay}</div>
     </div>`;
-  card.addEventListener('click', () => openLightbox(name, imgSrc, units));
+  card.addEventListener('click', () => openLightbox(name, imgSrc, units, price));
   return card;
 }
 
 // ── Lightbox ──────────────────────────────────────────────────────────────
-function openLightbox(name, imgSrc, units) {
+function openLightbox(name, imgSrc, units, price) {
   document.getElementById('lightbox-img').src = imgSrc;
   document.getElementById('lightbox-name').textContent = name;
+  document.getElementById('lightbox-price').textContent = price === 'N/A' ? 'Price: N/A' : `₪${price}`;
 
   const statusEl = document.getElementById('lightbox-status');
   statusEl.textContent = stockStatusText(units);
@@ -454,6 +466,20 @@ function closeLightbox(e) {
   document.body.style.overflow = '';
 }
 
+// ── Parse name and price from filename (format: "my piece name_150.jpg") ──
+function parseFilename(rawName) {
+  const noExt = rawName.replace(/\.[^/.]+$/, '');
+  const lastUnderscore = noExt.lastIndexOf('_');
+  if (lastUnderscore === -1) {
+    return { name: noExt.replace(/-/g, ' ').trim(), price: 'N/A' };
+  }
+  const namePart  = noExt.slice(0, lastUnderscore).replace(/-/g, ' ').trim();
+  const pricePart = noExt.slice(lastUnderscore + 1).trim();
+  const priceNum  = Number(pricePart);
+  const price     = (!pricePart || isNaN(priceNum)) ? 'N/A' : priceNum;
+  return { name: namePart, price };
+}
+
 // ── Fetch images from one Drive folder ────────────────────────────────────
 async function fetchDriveImages(folderId) {
   const url = `https://www.googleapis.com/drive/v3/files`
@@ -461,10 +487,10 @@ async function fetchDriveImages(folderId) {
     + `&fields=files(id,name)&key=${CONFIG.apiKey}`;
   const res  = await fetch(url);
   const data = await res.json();
-  return (data.files || []).map(f => ({
-    name: f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
-    img:  `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`,
-  }));
+  return (data.files || []).map(f => {
+    const { name, price } = parseFilename(f.name);
+    return { name, price, img: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800` };
+  });
 }
 
 // ── Populate a grid ───────────────────────────────────────────────────────
@@ -475,7 +501,7 @@ function populateGrid(gridId, items) {
     grid.innerHTML = `<p class="state-msg">Nothing here yet.</p>`;
     return;
   }
-  items.forEach(({ name, img, units }) => grid.appendChild(makeCard(name, img, units)));
+  items.forEach(({ name, img, units, price }) => grid.appendChild(makeCard(name, img, units, price)));
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
