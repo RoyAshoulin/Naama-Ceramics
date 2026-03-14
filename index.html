@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ceramic Works</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #faf8f5;
+      --text: #2c2825;
+      --muted: #8c8078;
+      --accent: #b5785a;
+      --card-bg: #ffffff;
+      --border: #e8e2da;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      padding: 60px 24px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+    header p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 1rem;
+      font-style: italic;
+    }
+    .contact-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 28px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .contact-link:hover { background: var(--accent); color: white; }
+
+    /* ── NAV TABS ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 40px auto 0;
+      max-width: 340px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    nav button {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      background: transparent;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    nav button.active { background: var(--accent); color: white; }
+    nav button:not(.active):hover { background: var(--border); }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .section { display: none; }
+    .section.visible { display: block; }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-family: sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.25s, transform 0.25s;
+      cursor: pointer;
+    }
+    .card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.09); transform: translateY(-3px); }
+
+    .card-img-wrap { position: relative; }
+    .card img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: var(--border);
+    }
+
+    /* Stock pill overlaid on the image */
+    .stock-pill {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-family: sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 20px;
+    }
+    .stock-1    { background: rgba(255,255,255,0.93); color: #b55a5a; border: 1px solid #e8c0b0; }
+    .stock-2    { background: rgba(255,255,255,0.93); color: #8a6820; border: 1px solid #e0d080; }
+    .stock-3    { background: rgba(255,255,255,0.93); color: #4a7a4a; border: 1px solid #a0c8a0; }
+    .stock-4    { background: rgba(255,255,255,0.93); color: #3a6a8a; border: 1px solid #90b8d0; }
+    .stock-sold { background: rgba(44,40,37,0.70);   color: #e8e2da; border: 1px solid transparent; }
+
+    .card-body { padding: 14px 16px 16px; }
+    .card-name  { font-size: 0.95rem; color: var(--text); }
+
+    /* ── LIGHTBOX ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(30,26,22,0.88);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox-inner {
+      background: white;
+      border-radius: 4px;
+      max-width: 680px;
+      width: 100%;
+      overflow: hidden;
+    }
+    #lightbox-img {
+      width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      background: var(--bg);
+      display: block;
+    }
+    #lightbox-info {
+      padding: 20px 24px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    #lightbox-name   { font-size: 1.15rem; }
+    #lightbox-status { font-family: sans-serif; font-size: 0.82rem; margin-top: 5px; }
+    #lightbox-ask {
+      flex-shrink: 0;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 2px;
+      font-family: sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    #lightbox-ask:hover { background: #9e6449; }
+    #lightbox-close {
+      position: absolute;
+      top: 16px; right: 20px;
+      font-size: 1.8rem;
+      color: white;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+    }
+
+    /* ── LOADING / EMPTY ── */
+    .state-msg {
+      grid-column: 1/-1;
+      text-align: center;
+      color: var(--muted);
+      font-style: italic;
+      padding: 60px 0;
+      font-size: 1rem;
+    }
+
+    /* ── SETUP BANNER ── */
+    #setup-banner {
+      background: #fff8e6;
+      border: 1px solid #f0d580;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-bottom: 40px;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: #5a4e1e;
+    }
+    #setup-banner strong { display: block; margin-bottom: 6px; font-size: 0.95rem; }
+    #setup-banner code {
+      background: #fdedb0;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 0.85rem;
+    }
+    #setup-banner ol { padding-left: 18px; margin-top: 8px; }
+    #setup-banner li { margin-bottom: 5px; }
+    #dismiss-banner {
+      margin-top: 14px;
+      padding: 7px 18px;
+      border: 1px solid #c8a828;
+      background: transparent;
+      color: #7a6010;
+      border-radius: 3px;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    #dismiss-banner:hover { background: #fdedb0; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-family: sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     ✏️  CONFIGURATION — edit only this section
+════════════════════════════════════════════════ -->
+<script>
+const CONFIG = {
+  // Your name shown in the header
+  artistName: "Naama Ceramics",
+
+  // A short tagline (optional)
+  tagline: "Handmade ceramic works outlet",
+
+  // Your contact email — friends click "Ask about this" and it opens their email app
+  contactEmail: "you@example.com",
+
+  // ── HOW TO GET A GOOGLE DRIVE FOLDER ID ─────────────────────────────────
+  // 1. Open the folder in Google Drive in your browser.
+  // 2. The URL looks like: https://drive.google.com/drive/folders/ABC123xyz
+  // 3. Copy the part after /folders/ — that is the folder ID.
+  // 4. Share each folder: right-click → Share → "Anyone with the link" → Viewer.
+  // ────────────────────────────────────────────────────────────────────────
+  folderIds: {
+    "1":    "1qh368tkwn7uS-sV6s32NLd5qBa3sClBZ",
+    "2":    "1iHYnaGJRJTfJjb7zWLUlTgzeD9rb-qVy",
+    "3":    "10Q_XxKw-O383Ub_qPxBUAEu4mN2aZ049",
+    "4":    "1fmNl1OE6tF5B7-6KQBvj21yyX0iKynwJ",
+    "sold": "17bVNh7nIUkCCN4qEZQ8YTYi57NnPkZhP",
+  },
+
+  // Google Drive API key — free to get (see setup guide below)
+  apiKey: "AIzaSyC9eNZJAAdFB-0N_FoeUOY1uzGO_B_UOS0",
+};
+</script>
+<!-- ════════════════════════════════════════════════ -->
+
+<header>
+  <h1 id="header-name"></h1>
+  <p id="header-tagline"></p>
+  <a id="header-contact" class="contact-link" href="#">Get in touch</a>
+
+  <nav>
+    <button class="active" onclick="showTab('available', this)">Available</button>
+    <button onclick="showTab('sold', this)">Sold</button>
+  </nav>
+</header>
+
+<main>
+  <div id="setup-banner">
+    <strong>👋 Setup guide — dismiss once you're done</strong>
+    <ol>
+      <li>Create 5 folders in Google Drive named exactly: <code>1 unit</code>, <code>2 units</code>, <code>3 units</code>, <code>4 units</code>, <code>sold</code>.</li>
+      <li>Upload your ceramic photos into the right folder. Name each file like <code>blue-bowl.jpg</code> — the filename becomes the piece title on the page.</li>
+      <li>Share each folder publicly: right-click → <strong>Share</strong> → <strong>"Anyone with the link"</strong> → Viewer.</li>
+      <li>Open each folder in your browser and copy its ID from the URL (the part after <code>/folders/</code>). Paste each one into the <code>CONFIG.folderIds</code> section at the top of this file.</li>
+      <li>Get a free API key: go to <strong>console.cloud.google.com</strong> → New project → Enable "Google Drive API" → Credentials → Create API Key. Paste it into <code>CONFIG.apiKey</code>.</li>
+      <li>Fill in your name and email in <code>CONFIG</code>, save, and open in your browser. Done!</li>
+      <li><strong>To update stock later:</strong> just move a photo between folders (e.g. <code>3 units</code> → <code>2 units</code>, or → <code>sold</code>). The site updates automatically on next load.</li>
+    </ol>
+    <button id="dismiss-banner" onclick="document.getElementById('setup-banner').style.display='none'">
+      Got it — hide this
+    </button>
+  </div>
+
+  <section id="sec-available" class="section visible">
+    <div class="section-title">Available works</div>
+    <div id="grid-available" class="grid"></div>
+  </section>
+
+  <section id="sec-sold" class="section">
+    <div class="section-title">Sold works</div>
+    <div id="grid-sold" class="grid"></div>
+  </section>
+</main>
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="closeLightbox(event)">
+  <button id="lightbox-close" onclick="closeLightbox()">×</button>
+  <div id="lightbox-inner">
+    <img id="lightbox-img" src="" alt=""/>
+    <div id="lightbox-info">
+      <div>
+        <div id="lightbox-name"></div>
+        <div id="lightbox-status"></div>
+      </div>
+      <a id="lightbox-ask" href="#">Ask about this</a>
+    </div>
+  </div>
+</div>
+
+<footer id="footer-credit"></footer>
+
+<script>
+// ── Apply config ──────────────────────────────────────────────────────────
+document.getElementById('header-name').textContent    = CONFIG.artistName;
+document.getElementById('header-tagline').textContent = CONFIG.tagline;
+document.getElementById('header-contact').href        = 'mailto:' + CONFIG.contactEmail;
+document.getElementById('footer-credit').textContent  = '© ' + CONFIG.artistName;
+
+// ── Stock metadata ────────────────────────────────────────────────────────
+const STOCK_META = {
+  "1":    { label: "1 left",  pillClass: "stock-1"    },
+  "2":    { label: "2 left",  pillClass: "stock-2"    },
+  "3":    { label: "3 left",  pillClass: "stock-3"    },
+  "4":    { label: "4 left",  pillClass: "stock-4"    },
+  "sold": { label: "Sold",    pillClass: "stock-sold"  },
+};
+
+function stockStatusText(units) {
+  if (units === 'sold') return 'Sold — no longer available';
+  return units === '1' ? '1 unit available' : `${units} units available`;
+}
+
+// ── Demo cards (shown while CONFIG placeholders are still in place) ───────
+const DEMO_AVAILABLE = [
+  { name: "Stoneware Bowl",  img: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=600&q=80", units: "3" },
+  { name: "Raku Vase",       img: "https://images.unsplash.com/photo-1620503374956-c942862f0372?w=600&q=80", units: "1" },
+  { name: "Slab Dish",       img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=600&q=80", units: "2" },
+  { name: "Tea Bowl",        img: "https://images.unsplash.com/photo-1614812513172-567d2fe96a75?w=600&q=80", units: "4" },
+  { name: "Speckled Mug",    img: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600&q=80", units: "2" },
+];
+const DEMO_SOLD = [
+  { name: "Terracotta Pot",  img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=600&q=80", units: "sold" },
+  { name: "Glazed Planter",  img: "https://images.unsplash.com/photo-1602532305019-3dbbd482dae9?w=600&q=80", units: "sold" },
+];
+
+// ── Tab switching ─────────────────────────────────────────────────────────
+function showTab(tab, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + tab).classList.add('visible');
+  btn.classList.add('active');
+}
+
+// ── Build a card ──────────────────────────────────────────────────────────
+function makeCard(name, imgSrc, units) {
+  const meta = STOCK_META[units];
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-img-wrap">
+      <img src="${imgSrc}" alt="${name}" loading="lazy"/>
+      <span class="stock-pill ${meta.pillClass}">${meta.label}</span>
+    </div>
+    <div class="card-body">
+      <div class="card-name">${name}</div>
+    </div>`;
+  card.addEventListener('click', () => openLightbox(name, imgSrc, units));
+  return card;
+}
+
+// ── Lightbox ──────────────────────────────────────────────────────────────
+function openLightbox(name, imgSrc, units) {
+  document.getElementById('lightbox-img').src = imgSrc;
+  document.getElementById('lightbox-name').textContent = name;
+
+  const statusEl = document.getElementById('lightbox-status');
+  statusEl.textContent = stockStatusText(units);
+  statusEl.style.color = units === 'sold' ? '#7a4a4a' : '#4a7a4a';
+
+  const askBtn = document.getElementById('lightbox-ask');
+  if (units !== 'sold') {
+    askBtn.style.display = 'inline-block';
+    askBtn.href = `mailto:${CONFIG.contactEmail}?subject=Enquiry about "${name}"&body=Hi! I saw "${name}" on your portfolio and I'd love to know more about it.`;
+  } else {
+    askBtn.style.display = 'none';
+  }
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') &&
+           e.target !== document.getElementById('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ── Fetch images from one Drive folder ────────────────────────────────────
+async function fetchDriveImages(folderId) {
+  const url = `https://www.googleapis.com/drive/v3/files`
+    + `?q=%27${folderId}%27+in+parents+and+mimeType+contains+%27image/%27`
+    + `&fields=files(id,name)&key=${CONFIG.apiKey}`;
+  const res  = await fetch(url);
+  const data = await res.json();
+  return (data.files || []).map(f => ({
+    name: f.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
+    img:  `https://drive.google.com/thumbnail?id=${f.id}&sz=w800`,
+  }));
+}
+
+// ── Populate a grid ───────────────────────────────────────────────────────
+function populateGrid(gridId, items) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  if (!items.length) {
+    grid.innerHTML = `<p class="state-msg">Nothing here yet.</p>`;
+    return;
+  }
+  items.forEach(({ name, img, units }) => grid.appendChild(makeCard(name, img, units)));
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+async function init() {
+  const isConfigured =
+    CONFIG.folderIds["1"] !== 'PASTE_FOLDER_ID_FOR_1_UNIT_HERE' &&
+    CONFIG.apiKey         !== 'PASTE_YOUR_GOOGLE_API_KEY_HERE';
+
+  if (!isConfigured) {
+    populateGrid('grid-available', DEMO_AVAILABLE);
+    populateGrid('grid-sold',      DEMO_SOLD);
+    return;
+  }
+
+  document.getElementById('setup-banner').style.display = 'none';
+  document.getElementById('grid-available').innerHTML = `<p class="state-msg">Loading…</p>`;
+  document.getElementById('grid-sold').innerHTML      = `<p class="state-msg">Loading…</p>`;
+
+  try {
+    const [f1, f2, f3, f4, fSold] = await Promise.all([
+      fetchDriveImages(CONFIG.folderIds["1"]),
+      fetchDriveImages(CONFIG.folderIds["2"]),
+      fetchDriveImages(CONFIG.folderIds["3"]),
+      fetchDriveImages(CONFIG.folderIds["4"]),
+      fetchDriveImages(CONFIG.folderIds["sold"]),
+    ]);
+
+    const available = [
+      ...f1.map(i => ({ ...i, units: "1" })),
+      ...f2.map(i => ({ ...i, units: "2" })),
+      ...f3.map(i => ({ ...i, units: "3" })),
+      ...f4.map(i => ({ ...i, units: "4" })),
+    ];
+
+    populateGrid('grid-available', available);
+    populateGrid('grid-sold',      fSold.map(i => ({ ...i, units: "sold" })));
+  } catch (err) {
+    document.getElementById('grid-available').innerHTML =
+      `<p class="state-msg">Couldn't load images — check your folder IDs and API key.</p>`;
+    document.getElementById('grid-sold').innerHTML = '';
+    console.error(err);
+  }
+}
+
+init();
+</script>
+</body>
+</html>
