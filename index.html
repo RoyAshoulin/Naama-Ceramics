@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Naama Ceramics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,6 +22,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
+      direction: ltr; /* default LTR, Hebrew elements override */
     }
 
     /* ── HEADER ── */
@@ -28,104 +30,128 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 32px;
+      padding: 14px 28px;
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       background: var(--bg);
       z-index: 100;
+      direction: ltr;
     }
 
     #logo-wrap {
       cursor: pointer;
       display: flex;
       align-items: center;
+      flex-shrink: 0;
     }
     #site-logo {
-      height: 56px;
-      max-width: 180px;
+      height: 52px;
+      max-width: 160px;
       object-fit: contain;
       display: none;
     }
     #header-name {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 400;
       letter-spacing: 0.04em;
       display: none;
     }
 
     /* ── SHOP DROPDOWN ── */
-    #main-nav { display: flex; align-items: center; gap: 8px; }
-
     .shop-dropdown { position: relative; }
+
     .shop-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      background: transparent;
-      font-family: sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text);
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Assistant', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: white;
       cursor: pointer;
       transition: all 0.2s;
+      direction: rtl;
     }
-    .shop-btn:hover, .shop-btn.open { border-color: var(--accent); color: var(--accent); }
-    .shop-btn svg { width: 12px; height: 12px; transition: transform 0.2s; }
+    .shop-btn:hover { background: #9e6449; }
+    .shop-btn svg { width: 14px; height: 14px; transition: transform 0.2s; flex-shrink: 0; }
     .shop-btn.open svg { transform: rotate(180deg); }
 
     .dropdown-menu {
       display: none;
       position: absolute;
-      top: calc(100% + 6px);
+      top: calc(100% + 8px);
       left: 0;
       background: white;
       border: 1px solid var(--border);
-      border-radius: 3px;
-      min-width: 160px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border-radius: 4px;
+      min-width: 180px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
       z-index: 200;
       overflow: hidden;
+      direction: rtl;
     }
     .dropdown-menu.open { display: block; }
     .dropdown-menu button {
       display: block;
       width: 100%;
-      padding: 11px 18px;
-      text-align: left;
+      padding: 13px 20px;
+      text-align: right;
       border: none;
       background: transparent;
-      font-family: sans-serif;
-      font-size: 0.83rem;
-      letter-spacing: 0.05em;
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
       color: var(--text);
       cursor: pointer;
       transition: background 0.15s;
-      text-transform: capitalize;
+      border-bottom: 1px solid var(--border);
     }
-    .dropdown-menu button:hover { background: var(--bg); }
-    .dropdown-menu button.active { color: var(--accent); font-weight: 600; }
+    .dropdown-menu button:last-child { border-bottom: none; }
+    .dropdown-menu button:hover { background: var(--bg); color: var(--accent); }
+    .dropdown-menu button.active { color: var(--accent); font-weight: 600; background: #fff5f0; }
 
-    /* ── SOCIAL ICONS ── */
-    .social-links { display: flex; align-items: center; gap: 10px; }
-    .social-links a {
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      direction: ltr;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    #footer-credit {
+      font-family: 'Assistant', sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .footer-social {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-social a {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      border: 1px solid var(--border);
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid var(--border);
       border-radius: 50%;
       color: var(--muted);
       text-decoration: none;
       transition: all 0.2s;
     }
-    .social-links a:hover { border-color: var(--accent); color: var(--accent); background: #fff5f0; }
-    .social-links svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .footer-social a:hover { border-color: var(--accent); color: var(--accent); background: #fff5f0; }
+    .footer-social svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 
     /* ── MAIN ── */
     main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -136,21 +162,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 60vh;
+      min-height: 55vh;
+      gap: 32px;
       text-align: center;
     }
-    #splash-img {
-      max-width: 90%;
-      max-height: 65vh;
+    #splash-logo {
+      max-width: min(420px, 85vw);
+      max-height: 220px;
       object-fit: contain;
       display: none;
     }
-    #splash-text {
+    #splash-text-img {
+      max-width: min(560px, 90vw);
+      max-height: 280px;
+      object-fit: contain;
+      display: none;
+    }
+    #splash-soon {
+      font-family: 'Assistant', sans-serif;
       font-size: clamp(1.8rem, 5vw, 3rem);
-      font-weight: 400;
-      letter-spacing: 0.06em;
+      font-weight: 300;
+      letter-spacing: 0.12em;
       color: var(--muted);
-      font-style: italic;
       display: none;
     }
 
@@ -158,17 +191,27 @@
     #shop-view { display: none; }
 
     .view-title {
-      font-size: 0.75rem;
-      font-family: sans-serif;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-family: 'Assistant', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--text);
       margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      text-align: right;
+      direction: rtl;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
     }
-    .view-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .view-title::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: 0;
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+    }
 
     /* ── GRID ── */
     .grid {
@@ -184,27 +227,21 @@
       overflow: hidden;
       transition: box-shadow 0.25s, transform 0.25s;
       cursor: pointer;
+      direction: rtl;
     }
     .card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.09); transform: translateY(-3px); }
     .card.is-sold { opacity: 0.72; }
 
     .card-img-wrap { position: relative; }
-    .card img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-      background: var(--border);
-    }
+    .card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: var(--border); }
 
     .stock-pill {
       position: absolute;
-      top: 10px; right: 10px;
-      font-family: sans-serif;
+      top: 10px; left: 10px;   /* left because card is RTL */
+      font-family: 'Assistant', sans-serif;
       font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       padding: 4px 9px;
       border-radius: 20px;
     }
@@ -214,9 +251,9 @@
     .stock-4    { background: rgba(255,255,255,0.93); color: #3a6a8a; border: 1px solid #90b8d0; }
     .stock-sold { background: rgba(44,40,37,0.72);   color: #e8e2da; border: 1px solid transparent; }
 
-    .card-body  { padding: 14px 16px 16px; }
-    .card-name  { font-size: 0.95rem; color: var(--text); }
-    .card-price { font-family: sans-serif; font-size: 0.82rem; color: var(--accent); margin-top: 4px; }
+    .card-body  { padding: 14px 16px 16px; text-align: right; }
+    .card-name  { font-family: 'Assistant', sans-serif; font-size: 1rem; font-weight: 400; color: var(--text); }
+    .card-price { font-family: 'Assistant', sans-serif; font-size: 0.85rem; color: var(--accent); margin-top: 4px; font-weight: 300; }
 
     /* ── LIGHTBOX ── */
     #lightbox {
@@ -230,33 +267,29 @@
       padding: 24px;
     }
     #lightbox.open { display: flex; }
-    #lightbox-inner { background: white; border-radius: 4px; max-width: 680px; width: 100%; overflow: hidden; }
-    #lightbox-img { width: 100%; max-height: 65vh; object-fit: contain; background: var(--bg); display: block; }
-    #lightbox-info { padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
-    #lightbox-name   { font-size: 1.15rem; }
-    #lightbox-price  { font-family: sans-serif; font-size: 1rem; color: var(--accent); margin-top: 4px; }
-    #lightbox-status { font-family: sans-serif; font-size: 0.82rem; margin-top: 4px; }
-    #lightbox-close  { position: absolute; top: 16px; right: 20px; font-size: 1.8rem; color: white; cursor: pointer; line-height: 1; background: none; border: none; }
+    #lightbox-inner { background: white; border-radius: 4px; max-width: 680px; width: 100%; overflow: hidden; direction: rtl; }
+    #lightbox-img   { width: 100%; max-height: 65vh; object-fit: contain; background: var(--bg); display: block; }
+    #lightbox-info  { padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-direction: row-reverse; }
+    #lightbox-name   { font-family: 'Assistant', sans-serif; font-size: 1.2rem; font-weight: 600; }
+    #lightbox-price  { font-family: 'Assistant', sans-serif; font-size: 1rem; color: var(--accent); margin-top: 4px; }
+    #lightbox-status { font-family: 'Assistant', sans-serif; font-size: 0.85rem; margin-top: 5px; }
+    #lightbox-close  { position: absolute; top: 16px; left: 20px; font-size: 1.8rem; color: white; cursor: pointer; line-height: 1; background: none; border: none; }
 
     .state-msg {
       grid-column: 1/-1;
       text-align: center;
       color: var(--muted);
-      font-style: italic;
+      font-family: 'Assistant', sans-serif;
       padding: 60px 0;
       font-size: 1rem;
     }
 
-    /* ── FOOTER ── */
-    footer { text-align: center; padding: 32px; border-top: 1px solid var(--border); color: var(--muted); font-family: sans-serif; font-size: 0.78rem; letter-spacing: 0.05em; }
-
     /* ── MOBILE ── */
     @media (max-width: 600px) {
-      header { padding: 12px 16px; }
-      #site-logo { height: 40px; max-width: 130px; }
-      .shop-btn { padding: 8px 12px; font-size: 0.78rem; }
-      .social-links a { width: 32px; height: 32px; }
-      .social-links svg { width: 14px; height: 14px; }
+      header { padding: 10px 16px; }
+      #site-logo { height: 38px; max-width: 120px; }
+      .shop-btn { padding: 9px 16px; font-size: 0.92rem; }
+      footer { padding: 16px 20px; }
     }
   </style>
 </head>
@@ -270,12 +303,8 @@ const CONFIG = {
   artistName:   "Naama Ceramics",
   contactEmail: "naama1993@gmail.com",
 
-  // Folder containing the logo image (any image in this folder = logo)
+  // The "Logo" folder — put "Logo.jpg" (site logo) and "Text.jpg" (splash image) here
   logoFolderId: "12AbiEMX9y7oQjkJN9PXlz-PMW7k579M0",
-
-  // Folder containing the splash image — must be named "Text" (e.g. Text.jpg)
-  // If not found, shows "Soon..." text instead
-  splashFolderId: "12AbiEMX9y7oQjkJN9PXlz-PMW7k579M0",
 
   // Stock folders — name images as: "item name_price_tag.jpg"
   // e.g. "blue bowl_150_cups.jpg"
@@ -293,42 +322,33 @@ const CONFIG = {
 <!-- ════════════════════════════════════════════════ -->
 
 <header>
+  <!-- Logo (top left) — click to go home -->
   <div id="logo-wrap" onclick="showSplash()">
     <img id="site-logo" src="" alt="Naama Ceramics"/>
     <h1 id="header-name">Naama Ceramics</h1>
   </div>
 
-  <div id="main-nav">
-    <div class="shop-dropdown" id="shop-dropdown">
-      <button class="shop-btn" id="shop-btn" onclick="toggleShopMenu()">
-        Shop
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-      <div class="dropdown-menu" id="dropdown-menu">
-        <!-- populated dynamically from tags -->
-      </div>
+  <!-- Shop dropdown (top right) -->
+  <div class="shop-dropdown" id="shop-dropdown">
+    <button class="shop-btn" id="shop-btn" onclick="toggleShopMenu()">
+      חנות
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="dropdown-menu" id="dropdown-menu">
+      <!-- populated dynamically -->
     </div>
-  </div>
-
-  <div class="social-links">
-    <a href="https://wa.me/972526175449" target="_blank" title="WhatsApp">
-      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-    </a>
-    <a href="https://instagram.com/naama_strauch" target="_blank" title="Instagram">
-      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-    </a>
-    <a id="header-contact" href="#" title="Email">
-      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-    </a>
   </div>
 </header>
 
 <main>
+  <!-- Splash / home -->
   <div id="splash">
-    <img id="splash-img" src="" alt=""/>
-    <div id="splash-text">Soon...</div>
+    <img id="splash-logo" src="" alt="Naama Ceramics"/>
+    <img id="splash-text-img" src="" alt=""/>
+    <div id="splash-soon">בקרוב...</div>
   </div>
 
+  <!-- Shop tag view -->
   <div id="shop-view">
     <div class="view-title" id="view-title"></div>
     <div id="shop-grid" class="grid"></div>
@@ -364,39 +384,52 @@ const CONFIG = {
   </div>
 </div>
 
-<footer id="footer-credit"></footer>
+<footer>
+  <div id="footer-credit"></div>
+  <div class="footer-social">
+    <a href="https://wa.me/972526175449" target="_blank" title="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+    </a>
+    <a href="https://instagram.com/naama_strauch" target="_blank" title="Instagram">
+      <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+    </a>
+    <a id="footer-email" href="#" title="Email">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    </a>
+  </div>
+</footer>
 
 <script>
 // ── Setup ─────────────────────────────────────────────────────────────────
-document.getElementById('header-contact').href      = 'mailto:' + CONFIG.contactEmail;
+document.getElementById('footer-email').href      = 'mailto:' + CONFIG.contactEmail;
 document.getElementById('footer-credit').textContent = '© ' + CONFIG.artistName;
 
 // ── Stock metadata ────────────────────────────────────────────────────────
 const STOCK_META = {
-  "1":    { label: "1 left",  pillClass: "stock-1"   },
-  "2":    { label: "2 left",  pillClass: "stock-2"   },
-  "3":    { label: "3 left",  pillClass: "stock-3"   },
-  "4":    { label: "4 left",  pillClass: "stock-4"   },
-  "sold": { label: "Sold",    pillClass: "stock-sold" },
+  "1":    { label: "נותר 1",   pillClass: "stock-1"   },
+  "2":    { label: "נותרו 2",  pillClass: "stock-2"   },
+  "3":    { label: "נותרו 3",  pillClass: "stock-3"   },
+  "4":    { label: "נותרו 4",  pillClass: "stock-4"   },
+  "sold": { label: "נמכר",     pillClass: "stock-sold" },
 };
 
 function stockStatusText(units) {
-  if (units === 'sold') return 'Sold — no longer available';
-  return units === '1' ? '1 unit available' : `${units} units available`;
+  if (units === 'sold') return 'נמכר — לא זמין יותר';
+  return units === '1' ? 'פריט אחד זמין' : `${units} פריטים זמינים`;
 }
 
 // ── Parse filename: "name_price_tag.jpg" ─────────────────────────────────
 function parseFilename(rawName) {
-  const noExt  = rawName.replace(/\.[^/.]+$/, '');
-  const parts  = noExt.split('_');
-  const name   = (parts[0] || '').replace(/-/g, ' ').trim();
-  const price  = parts[1] !== undefined && !isNaN(Number(parts[1]))
-                  ? Number(parts[1]) : 'N/A';
-  const tag    = parts[2] ? parts[2].trim().toLowerCase() : 'other';
+  const noExt = rawName.replace(/\.[^/.]+$/, '');
+  const parts = noExt.split('_');
+  const name  = (parts[0] || '').replace(/-/g, ' ').trim();
+  const price = parts[1] !== undefined && !isNaN(Number(parts[1]))
+                 ? Number(parts[1]) : 'N/A';
+  const tag   = parts[2] ? parts[2].trim().toLowerCase() : 'other';
   return { name, price, tag };
 }
 
-// ── Fetch images from one Drive folder ───────────────────────────────────
+// ── Fetch images from Drive folder ───────────────────────────────────────
 async function fetchDriveImages(folderId) {
   const url = `https://www.googleapis.com/drive/v3/files`
     + `?q=%27${folderId}%27+in+parents+and+mimeType+contains+%27image/%27`
@@ -417,22 +450,19 @@ async function loadAllItems() {
     fetchDriveImages(CONFIG.folderIds["4"]),
     fetchDriveImages(CONFIG.folderIds["sold"]),
   ]);
-
   const map = (files, units) => files.map(f => {
     const { name, price, tag } = parseFilename(f.name);
     return { name, price, tag, units, img: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800` };
   });
-
   allItems = [
-    ...map(f1, "1"), ...map(f2, "2"),
-    ...map(f3, "3"), ...map(f4, "4"),
-    ...map(fSold, "sold"),
+    ...map(f1,"1"), ...map(f2,"2"),
+    ...map(f3,"3"), ...map(f4,"4"),
+    ...map(fSold,"sold"),
   ];
-
   buildDropdown();
 }
 
-// ── Build dropdown from unique tags ──────────────────────────────────────
+// ── Build dropdown ────────────────────────────────────────────────────────
 function buildDropdown() {
   const tags = [...new Set(allItems.map(i => i.tag))].sort();
   const menu = document.getElementById('dropdown-menu');
@@ -446,12 +476,11 @@ function buildDropdown() {
   });
 }
 
-// ── Toggle shop menu ──────────────────────────────────────────────────────
+// ── Toggle dropdown ───────────────────────────────────────────────────────
 function toggleShopMenu() {
   document.getElementById('shop-btn').classList.toggle('open');
   document.getElementById('dropdown-menu').classList.toggle('open');
 }
-
 document.addEventListener('click', e => {
   if (!document.getElementById('shop-dropdown').contains(e.target)) {
     document.getElementById('shop-btn').classList.remove('open');
@@ -472,26 +501,22 @@ function showSplash() {
 function showTag(tag) {
   document.getElementById('shop-btn').classList.remove('open');
   document.getElementById('dropdown-menu').classList.remove('open');
-
   document.querySelectorAll('.dropdown-menu button').forEach(b =>
     b.classList.toggle('active', b.dataset.tag === tag)
   );
-
   const available = allItems.filter(i => i.tag === tag && i.units !== 'sold');
   const sold      = allItems.filter(i => i.tag === tag && i.units === 'sold');
   const items     = [...available, ...sold];
 
   document.getElementById('view-title').textContent =
     tag.charAt(0).toUpperCase() + tag.slice(1);
-
   const grid = document.getElementById('shop-grid');
   grid.innerHTML = '';
   if (!items.length) {
-    grid.innerHTML = `<p class="state-msg">Nothing here yet.</p>`;
+    grid.innerHTML = `<p class="state-msg">אין פריטים כאן עדיין.</p>`;
   } else {
     items.forEach(item => grid.appendChild(makeCard(item)));
   }
-
   document.getElementById('splash').style.display    = 'none';
   document.getElementById('shop-view').style.display = 'block';
 }
@@ -499,7 +524,7 @@ function showTag(tag) {
 // ── Make card ─────────────────────────────────────────────────────────────
 function makeCard({ name, img, units, price }) {
   const meta         = STOCK_META[units];
-  const priceDisplay = price === 'N/A' ? 'N/A' : `₪${price}`;
+  const priceDisplay = price === 'N/A' ? '' : `₪${price}`;
   const card         = document.createElement('div');
   card.className     = 'card' + (units === 'sold' ? ' is-sold' : '');
   card.innerHTML     = `
@@ -509,7 +534,7 @@ function makeCard({ name, img, units, price }) {
     </div>
     <div class="card-body">
       <div class="card-name">${name}</div>
-      <div class="card-price">${priceDisplay}</div>
+      ${priceDisplay ? `<div class="card-price">${priceDisplay}</div>` : ''}
     </div>`;
   card.addEventListener('click', () => openLightbox({ name, img, units, price }));
   return card;
@@ -517,14 +542,12 @@ function makeCard({ name, img, units, price }) {
 
 // ── Lightbox ──────────────────────────────────────────────────────────────
 function openLightbox({ name, img, units, price }) {
-  document.getElementById('lightbox-img').src            = img;
-  document.getElementById('lightbox-name').textContent   = name;
-  document.getElementById('lightbox-price').textContent  = price === 'N/A' ? 'מחיר: N/A' : `₪${price}`;
-
+  document.getElementById('lightbox-img').src           = img;
+  document.getElementById('lightbox-name').textContent  = name;
+  document.getElementById('lightbox-price').textContent = price === 'N/A' ? '' : `₪${price}`;
   const statusEl = document.getElementById('lightbox-status');
   statusEl.textContent = stockStatusText(units);
   statusEl.style.color = units === 'sold' ? '#7a4a4a' : '#4a7a4a';
-
   const actions = document.getElementById('lightbox-actions');
   if (units !== 'sold') {
     actions.style.display = 'flex';
@@ -538,7 +561,6 @@ function openLightbox({ name, img, units, price }) {
   document.getElementById('lightbox').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeLightbox(e) {
   if (e && e.target !== document.getElementById('lightbox') &&
            e.target !== document.getElementById('lightbox-close')) return;
@@ -546,12 +568,15 @@ function closeLightbox(e) {
   document.body.style.overflow = '';
 }
 
-// ── Load logo ─────────────────────────────────────────────────────────────
-async function loadLogo() {
+// ── Load logo folder (Logo + Text images) ────────────────────────────────
+async function loadLogoFolder() {
   try {
     const files = await fetchDriveImages(CONFIG.logoFolderId);
-    // Use first image in the logo folder that is NOT named "Text"
-    const logoFile = files.find(f => f.name.replace(/\.[^/.]+$/, '').toLowerCase() !== 'text');
+
+    // Header logo — file named "Logo"
+    const logoFile = files.find(f =>
+      f.name.replace(/\.[^/.]+$/, '').toLowerCase() === 'logo'
+    );
     if (logoFile) {
       const el = document.getElementById('site-logo');
       el.src = `https://drive.google.com/thumbnail?id=${logoFile.id}&sz=w400`;
@@ -559,34 +584,40 @@ async function loadLogo() {
     } else {
       document.getElementById('header-name').style.display = 'block';
     }
-  } catch(e) {
-    document.getElementById('header-name').style.display = 'block';
-  }
-}
 
-// ── Load splash image ─────────────────────────────────────────────────────
-async function loadSplash() {
-  try {
-    const files    = await fetchDriveImages(CONFIG.splashFolderId);
-    const textFile = files.find(f => f.name.replace(/\.[^/.]+$/, '').toLowerCase() === 'text');
-    if (textFile) {
-      const el = document.getElementById('splash-img');
-      el.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
-      el.style.display = 'block';
-    } else {
-      document.getElementById('splash-text').style.display = 'block';
+    // Splash logo — also show "Logo" image, larger
+    if (logoFile) {
+      const sl = document.getElementById('splash-logo');
+      sl.src = `https://drive.google.com/thumbnail?id=${logoFile.id}&sz=w800`;
+      sl.style.display = 'block';
     }
+
+    // Splash text image — file named "Text"
+    const textFile = files.find(f =>
+      f.name.replace(/\.[^/.]+$/, '').toLowerCase() === 'text'
+    );
+    if (textFile) {
+      const tl = document.getElementById('splash-text-img');
+      tl.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
+      tl.style.display = 'block';
+    }
+
+    // If neither logo nor text found, show "בקרוב"
+    if (!logoFile && !textFile) {
+      document.getElementById('splash-soon').style.display = 'block';
+    }
+
   } catch(e) {
-    document.getElementById('splash-text').style.display = 'block';
+    document.getElementById('header-name').style.display  = 'block';
+    document.getElementById('splash-soon').style.display  = 'block';
   }
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────
 async function init() {
   showSplash();
-  await Promise.all([loadLogo(), loadSplash(), loadAllItems()]);
+  await Promise.all([loadLogoFolder(), loadAllItems()]);
 }
-
 init();
 </script>
 </body>
