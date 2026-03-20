@@ -86,11 +86,13 @@
       display: none;
       position: absolute;
       top: calc(100% + 8px);
-      left: 0;
+      right: 0;
+      left: auto;
       background: white;
       border: 1px solid var(--border);
       border-radius: 4px;
       min-width: 180px;
+      max-width: calc(100vw - 32px);
       box-shadow: 0 12px 32px rgba(0,0,0,0.12);
       z-index: 200;
       overflow: hidden;
@@ -600,10 +602,8 @@ async function loadLogoFolder() {
       const tl = document.getElementById('splash-text-img');
       tl.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
       tl.style.display = 'block';
-    }
-
-    // If neither logo nor text found, show "בקרוב"
-    if (!logoFile && !textFile) {
+    } else {
+      // No Text image — show "בקרוב" below the logo
       document.getElementById('splash-soon').style.display = 'block';
     }
 
