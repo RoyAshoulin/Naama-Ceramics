@@ -200,10 +200,15 @@
       display: none;
     }
     #splash-text-img {
-      max-width: min(560px, 90vw);
-      max-height: 280px;
+      width: 50vw;
+      height: auto;
       object-fit: contain;
       display: none;
+    }
+    @media (max-width: 768px) {
+      #splash-text-img {
+        width: 100vw;
+      }
     }
     #splash-soon {
       font-family: 'Assistant', sans-serif;
