@@ -747,7 +747,7 @@ async function loadLogoFolder() {
     );
     if (splashFile) {
       const sh = document.getElementById('splash-hero');
-      if (sh) { sh.src = `https://lh3.googleusercontent.com/d/${splashFile.id}`; sh.style.display = 'block'; }
+      if (sh) { sh.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w400`; sh.style.display = 'block'; }
     }
 
     // Splash + header logo — file named "Logo"
@@ -756,7 +756,7 @@ async function loadLogoFolder() {
     );
     if (logoFile) {
       const sl = document.getElementById('splash-logo');
-      if (sl) { sl.src = `https://lh3.googleusercontent.com/d/${logoFile.id}`; sl.style.display = 'block'; }
+      if (sl) { sl.src = `https://drive.google.com/thumbnail?id=${logoFile.id}&sz=w400`; sl.style.display = 'block'; }
     }
 
     // Splash text image — file named "Text"
@@ -765,7 +765,7 @@ async function loadLogoFolder() {
     );
     if (textFile) {
       const tl = document.getElementById('splash-text-img');
-      tl.src = `https://lh3.googleusercontent.com/d/${textFile.id}`;
+      tl.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w400`;
       tl.style.display = 'block';
     } else {
       document.getElementById('splash-soon').style.display = 'block';
@@ -775,11 +775,11 @@ async function loadLogoFolder() {
     const storyHero = document.getElementById('story-splash-img');
     const storyText = document.getElementById('story-text-img');
     if (splashFile && storyHero) {
-      storyHero.src = `https://lh3.googleusercontent.com/d/${splashFile.id}`;
+      storyHero.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w400`;
       console.log('Story hero set, file:', splashFile.name);
     }
     if (textFile && storyText) {
-      storyText.src = `https://lh3.googleusercontent.com/d/${textFile.id}`;
+      storyText.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w400`;
       console.log('Story text set, file:', textFile.name);
     }
 
@@ -790,7 +790,7 @@ async function loadLogoFolder() {
 
     function setIconSrc(ids, fileObj) {
       if (!fileObj) { console.warn('Icon file not found'); return; }
-      const src = `https://lh3.googleusercontent.com/d/${fileObj.id}`;
+      const src = `https://drive.google.com/thumbnail?id=${fileObj.id}&sz=w400`;
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
