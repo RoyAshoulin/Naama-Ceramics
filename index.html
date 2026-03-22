@@ -3,8 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Naama Ceramics</title>
-  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <title>Ceramics by Naama</title>
+  <style>@import url("https://use.typekit.net/placeholder.css");</style>
+  <style>
+    @font-face {
+      font-family: "Parmigiano Sans";
+      src: local("Parmigiano Sans"), local("ParmigianoSans");
+      font-weight: 100 900;
+    }
+  </style>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,7 +25,7 @@
     }
 
     body {
-      font-family: 'Georgia', serif;
+      font-family: 'Parmigiano Sans', 'Assistant', Georgia, serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -53,7 +60,7 @@
     }
     #header-name { display: none; }
     #header-home-text {
-      font-family: 'Georgia', serif;
+      font-family: 'Parmigiano Sans', 'Assistant', Georgia, serif;
       font-size: 1.05rem;
       font-weight: 400;
       letter-spacing: 0.07em;
@@ -74,7 +81,7 @@
       background: var(--accent);
       border: none;
       border-radius: 4px;
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: 1rem;
       font-weight: 600;
       letter-spacing: 0.04em;
@@ -111,7 +118,7 @@
       text-align: right;
       border: none;
       background: transparent;
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: 0.95rem;
       font-weight: 400;
       color: var(--text);
@@ -135,7 +142,7 @@
       gap: 10px;
     }
     #footer-credit {
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: 0.8rem;
       color: var(--muted);
       letter-spacing: 0.05em;
@@ -179,6 +186,15 @@
       text-align: center;
       padding-top: 40px;
     }
+    #splash-hero {
+      width: 75vw;
+      height: auto;
+      object-fit: contain;
+      display: none;
+    }
+    @media (max-width: 768px) {
+      #splash-hero { width: 100vw; }
+    }
     #splash-logo {
       max-width: min(420px, 85vw);
       max-height: 220px;
@@ -197,7 +213,7 @@
       }
     }
     #splash-soon {
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: clamp(1.8rem, 5vw, 3rem);
       font-weight: 300;
       letter-spacing: 0.12em;
@@ -209,7 +225,7 @@
     #shop-view { display: none; padding-bottom: 80px; }
 
     .view-title {
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: 1.6rem;
       font-weight: 300;
       letter-spacing: 0.08em;
@@ -254,7 +270,7 @@
     .card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; background: var(--border); }
 
     .stock-pill {
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       letter-spacing: 0.03em;
@@ -269,9 +285,9 @@
     .stock-sold { background: rgba(44,40,37,0.72);   color: #e8e2da; border: 1px solid transparent; }
 
     .card-body  { padding: 14px 16px 16px; text-align: right; }
-    .card-name  { font-family: 'Assistant', sans-serif; font-size: 1rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
+    .card-name  { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 1rem; font-weight: 400; color: var(--text); margin-bottom: 8px; }
     .card-bottom { display: flex; align-items: center; justify-content: space-between; flex-direction: row-reverse; gap: 6px; }
-    .card-price { font-family: 'Assistant', sans-serif; font-size: 0.85rem; color: var(--accent); font-weight: 300; }
+    .card-price { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 0.85rem; color: var(--accent); font-weight: 300; }
 
     /* ── LIGHTBOX ── */
     #lightbox {
@@ -288,17 +304,17 @@
     #lightbox-inner { background: white; border-radius: 4px; max-width: 680px; width: 100%; overflow: hidden; direction: rtl; }
     #lightbox-img   { width: 100%; max-height: 65vh; object-fit: contain; background: var(--bg); display: block; }
     #lightbox-info  { padding: 20px 24px 24px; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; direction: rtl; }
-    #lightbox-contact-label { font-family: 'Assistant', sans-serif; font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; text-align: center; }
-    #lightbox-name   { font-family: 'Assistant', sans-serif; font-size: 1.2rem; font-weight: 600; }
-    #lightbox-price  { font-family: 'Assistant', sans-serif; font-size: 1rem; color: var(--accent); margin-top: 4px; }
-    #lightbox-status { font-family: 'Assistant', sans-serif; font-size: 0.85rem; margin-top: 5px; }
+    #lightbox-contact-label { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; text-align: center; }
+    #lightbox-name   { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 1.2rem; font-weight: 600; }
+    #lightbox-price  { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 1rem; color: var(--accent); margin-top: 4px; }
+    #lightbox-status { font-family: 'Parmigiano Sans', 'Assistant', sans-serif; font-size: 0.85rem; margin-top: 5px; }
     #lightbox-close  { position: absolute; top: 16px; left: 20px; font-size: 1.8rem; color: white; cursor: pointer; line-height: 1; background: none; border: none; }
 
     .state-msg {
       grid-column: 1/-1;
       text-align: center;
       color: var(--muted);
-      font-family: 'Assistant', sans-serif;
+      font-family: 'Parmigiano Sans', 'Assistant', sans-serif;
       padding: 60px 0;
       font-size: 1rem;
     }
@@ -319,7 +335,7 @@
 ════════════════════════════════════════════════ -->
 <script>
 const CONFIG = {
-  artistName:   "Naama Ceramics",
+  artistName:   "Ceramics by Naama",
   contactEmail: "naama1993@gmail.com",
 
   // The "Logo" folder — put "Logo.jpg" (site logo) and "Text.jpg" (splash image) here
@@ -360,7 +376,8 @@ const CONFIG = {
 <main>
   <!-- Splash / home -->
   <div id="splash">
-    <img id="splash-logo" src="" alt="Naama Ceramics"/>
+    <img id="splash-hero" src="" alt=""/>
+    <img id="splash-logo" src="" alt="Ceramics by Naama"/>
     <img id="splash-text-img" src="" alt=""/>
     <div id="splash-soon">בקרוב...</div>
   </div>
@@ -384,7 +401,7 @@ const CONFIG = {
         <div id="lightbox-status"></div>
       </div>
       <div id="lightbox-actions" style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:8px;order:2;">
-        <div id="lightbox-contact-label" style="font-family:'Assistant',sans-serif;font-size:0.82rem;color:#8c8078;text-align:center;">לפרטים נוספים:</div>
+        <div id="lightbox-contact-label" style="font-family:'Parmigiano Sans','Assistant',sans-serif;font-size:0.82rem;color:#8c8078;text-align:center;">לפרטים נוספים:</div>
         <div style="display:flex;gap:10px;">
           <a id="lightbox-whatsapp" href="#" target="_blank" title="WhatsApp" class="icon-whatsapp"><svg viewBox="0 0 48 48" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
   <rect width="48" height="48" rx="10" fill="#25D366"/>
@@ -607,6 +624,15 @@ function closeLightbox(e) {
 async function loadLogoFolder() {
   try {
     const files = await fetchDriveImages(CONFIG.logoFolderId);
+
+    // Splash hero image — file named "Splash image"
+    const splashFile = files.find(f =>
+      f.name.replace(/\.[^/.]+$/, '').toLowerCase() === 'splash image'
+    );
+    if (splashFile) {
+      const sh = document.getElementById('splash-hero');
+      if (sh) { sh.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`; sh.style.display = 'block'; }
+    }
 
     // Splash + header logo — file named "Logo"
     const logoFile = files.find(f =>
