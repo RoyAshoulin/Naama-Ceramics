@@ -471,7 +471,6 @@ const CONFIG = {
   <div id="splash">
     <img id="splash-logo" src="" alt="Ceramics by Naama"/>
   </div>
-  <div id="drive-debug" style="display:none;background:#fff8e6;border:1px solid #f0d580;border-radius:6px;padding:16px;margin:16px 24px;font-family:monospace;font-size:0.8rem;line-height:1.8;color:#5a4e1e;direction:ltr;text-align:left;"></div>
   <div id="tag-gallery"><div class="tag-gallery-grid" id="tag-gallery-grid"></div></div>
 
   <!-- Story page -->
@@ -570,7 +569,7 @@ async function loadAllItems() {
   ]);
   const map = (files, units) => files.map(f => {
     const { name, price, tag } = parseFilename(f.name);
-    return { name, price, tag, units, img: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800` };
+    return { name, price, tag, units, img: `https://drive.google.com/uc?export=view&id=${f.id}` };
   });
   allItems = [
     ...map(f1,"1"), ...map(f2,"2"),
@@ -742,18 +741,7 @@ async function loadLogoFolder() {
   try {
     const files = await fetchDriveImages(CONFIG.logoFolderId);
 
-    // ── DEBUG: show filenames from logo folder ─────────────────────────
-    const debugEl = document.getElementById('drive-debug');
-    if (debugEl) {
-      if (files.length === 0) {
-        debugEl.textContent = '⚠️ No files found in logo folder. Check folder is shared publicly.';
-      } else {
-        debugEl.innerHTML = '📁 Files in logo folder:<br>' + 
-          files.map(f => `• "${f.name}" (id: ${f.id.slice(0,8)}...)`).join('<br>');
-      }
-      debugEl.style.display = 'block';
-    }
-    // ──────────────────────────────────────────────────────────────────
+
 
     // Splash hero image — file named "Splash image"
     const splashFile = files.find(f =>
@@ -761,7 +749,7 @@ async function loadLogoFolder() {
     );
     if (splashFile) {
       const sh = document.getElementById('splash-hero');
-      if (sh) { sh.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`; sh.style.display = 'block'; }
+      if (sh) { sh.src = `https://drive.google.com/uc?export=view&id=${splashFile.id}`; sh.style.display = 'block'; }
     }
 
     // Splash + header logo — file named "Logo"
@@ -770,7 +758,7 @@ async function loadLogoFolder() {
     );
     if (logoFile) {
       const sl = document.getElementById('splash-logo');
-      if (sl) { sl.src = `https://drive.google.com/thumbnail?id=${logoFile.id}&sz=w1200`; sl.style.display = 'block'; }
+      if (sl) { sl.src = `https://drive.google.com/uc?export=view&id=${logoFile.id}`; sl.style.display = 'block'; }
     }
 
     // Splash text image — file named "Text"
@@ -779,7 +767,7 @@ async function loadLogoFolder() {
     );
     if (textFile) {
       const tl = document.getElementById('splash-text-img');
-      tl.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
+      tl.src = `https://drive.google.com/uc?export=view&id=${textFile.id}`;
       tl.style.display = 'block';
     } else {
       document.getElementById('splash-soon').style.display = 'block';
@@ -789,11 +777,11 @@ async function loadLogoFolder() {
     const storyHero = document.getElementById('story-splash-img');
     const storyText = document.getElementById('story-text-img');
     if (splashFile && storyHero) {
-      storyHero.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`;
+      storyHero.src = `https://drive.google.com/uc?export=view&id=${splashFile.id}`;
       console.log('Story hero set, file:', splashFile.name);
     }
     if (textFile && storyText) {
-      storyText.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
+      storyText.src = `https://drive.google.com/uc?export=view&id=${textFile.id}`;
       console.log('Story text set, file:', textFile.name);
     }
 
@@ -804,7 +792,7 @@ async function loadLogoFolder() {
 
     function setIconSrc(ids, fileObj) {
       if (!fileObj) { console.warn('Icon file not found'); return; }
-      const src = `https://drive.google.com/thumbnail?id=${fileObj.id}&sz=w200`;
+      const src = `https://drive.google.com/uc?export=view&id=${fileObj.id}`;
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
