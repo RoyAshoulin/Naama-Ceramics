@@ -173,7 +173,8 @@
     }
 
     /* ── MAIN ── */
-    main { max-width: 1100px; margin: 0 auto; padding: 48px 24px 0; }
+    main { max-width: 100%; margin: 0; padding: 0; }
+    #shop-view { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 
     /* ── SPLASH ── */
     #splash {
@@ -182,24 +183,26 @@
       align-items: center;
       justify-content: flex-start;
       min-height: 55vh;
-      gap: 24px;
+      gap: 0;
       text-align: center;
-      padding-top: 40px;
+      padding-top: 0;
     }
     #splash-hero {
       width: 75vw;
       height: auto;
       object-fit: contain;
       display: none;
+      margin-top: 0;
     }
     @media (max-width: 768px) {
       #splash-hero { width: 100vw; }
     }
     #splash-logo {
       max-width: min(420px, 85vw);
-      max-height: 220px;
+      max-height: 180px;
       object-fit: contain;
       display: none;
+      padding: 28px 0 20px;
     }
     #splash-text-img {
       width: 50vw;
@@ -376,8 +379,8 @@ const CONFIG = {
 <main>
   <!-- Splash / home -->
   <div id="splash">
-    <img id="splash-hero" src="" alt=""/>
     <img id="splash-logo" src="" alt="Ceramics by Naama"/>
+    <img id="splash-hero" src="" alt=""/>
     <img id="splash-text-img" src="" alt=""/>
     <div id="splash-soon">בקרוב...</div>
   </div>
