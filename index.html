@@ -569,7 +569,7 @@ async function loadAllItems() {
   ]);
   const map = (files, units) => files.map(f => {
     const { name, price, tag } = parseFilename(f.name);
-    return { name, price, tag, units, img: `https://drive.google.com/uc?export=view&id=${f.id}` };
+    return { name, price, tag, units, img: `https://drive.google.com/thumbnail?id=${f.id}&sz=w800` };
   });
   allItems = [
     ...map(f1,"1"), ...map(f2,"2"),
@@ -749,7 +749,7 @@ async function loadLogoFolder() {
     );
     if (splashFile) {
       const sh = document.getElementById('splash-hero');
-      if (sh) { sh.src = `https://drive.google.com/uc?export=view&id=${splashFile.id}`; sh.style.display = 'block'; }
+      if (sh) { sh.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`; sh.style.display = 'block'; }
     }
 
     // Splash + header logo — file named "Logo"
@@ -758,7 +758,7 @@ async function loadLogoFolder() {
     );
     if (logoFile) {
       const sl = document.getElementById('splash-logo');
-      if (sl) { sl.src = `https://drive.google.com/uc?export=view&id=${logoFile.id}`; sl.style.display = 'block'; }
+      if (sl) { sl.src = `https://drive.google.com/thumbnail?id=${logoFile.id}&sz=w1200`; sl.style.display = 'block'; }
     }
 
     // Splash text image — file named "Text"
@@ -767,7 +767,7 @@ async function loadLogoFolder() {
     );
     if (textFile) {
       const tl = document.getElementById('splash-text-img');
-      tl.src = `https://drive.google.com/uc?export=view&id=${textFile.id}`;
+      tl.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
       tl.style.display = 'block';
     } else {
       document.getElementById('splash-soon').style.display = 'block';
@@ -777,11 +777,11 @@ async function loadLogoFolder() {
     const storyHero = document.getElementById('story-splash-img');
     const storyText = document.getElementById('story-text-img');
     if (splashFile && storyHero) {
-      storyHero.src = `https://drive.google.com/uc?export=view&id=${splashFile.id}`;
+      storyHero.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`;
       console.log('Story hero set, file:', splashFile.name);
     }
     if (textFile && storyText) {
-      storyText.src = `https://drive.google.com/uc?export=view&id=${textFile.id}`;
+      storyText.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
       console.log('Story text set, file:', textFile.name);
     }
 
@@ -792,7 +792,7 @@ async function loadLogoFolder() {
 
     function setIconSrc(ids, fileObj) {
       if (!fileObj) { console.warn('Icon file not found'); return; }
-      const src = `https://drive.google.com/uc?export=view&id=${fileObj.id}`;
+      const src = `https://drive.google.com/thumbnail?id=${fileObj.id}&sz=w200`;
       ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
