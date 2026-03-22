@@ -258,6 +258,9 @@
       padding: 40px 24px 60px;
       display: none;
     }
+    @media (max-width: 600px) {
+      #tag-gallery { padding: 0 0 40px; }
+    }
     .tag-gallery-grid {
       display: flex;
       flex-wrap: wrap;
@@ -278,8 +281,8 @@
       transition: transform 0.25s, box-shadow 0.25s;
     }
     @media (max-width: 600px) {
-      .tag-gallery-grid { gap: 0; max-width: 100%; }
-      .tag-tile { width: 100vw; height: 56vw; border-radius: 0; }
+      .tag-gallery-grid { gap: 6px; max-width: 100%; padding: 0 6px; }
+      .tag-tile { width: calc(100vw - 12px); height: 56vw; border-radius: 6px; }
     }
     .tag-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
     .tag-tile img {
@@ -644,7 +647,15 @@ function showStory() {
   document.getElementById('splash').style.display      = 'none';
   document.getElementById('tag-gallery').style.display = 'none';
   document.getElementById('shop-view').style.display   = 'none';
-  document.getElementById('story-view').style.display  = 'flex';
+  const sv = document.getElementById('story-view');
+  sv.style.display = 'flex';
+  // Force images to load from data-src if not yet loaded
+  ['story-splash-img','story-text-img'].forEach(id => {
+    const img = document.getElementById(id);
+    if (img && img.dataset.src && !img.src.includes('drive.google')) {
+      img.src = img.dataset.src;
+    }
+  });
   document.querySelector('.story-btn').classList.add('active');
   document.querySelectorAll('.dropdown-menu button').forEach(b => b.classList.remove('active'));
   document.getElementById('shop-btn').classList.remove('open');
@@ -763,14 +774,18 @@ async function loadLogoFolder() {
       document.getElementById('splash-soon').style.display = 'block';
     }
 
-    // Story page images — Splash image (75vw) + Text image (50vw)
+    // Story page images — preload so they show when page is revealed
     const storyHero = document.getElementById('story-splash-img');
     const storyText = document.getElementById('story-text-img');
     if (splashFile && storyHero) {
-      storyHero.src = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`;
+      const splashUrl = `https://drive.google.com/thumbnail?id=${splashFile.id}&sz=w1600`;
+      storyHero.setAttribute('data-src', splashUrl);
+      storyHero.src = splashUrl;
     }
     if (textFile && storyText) {
-      storyText.src = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
+      const textUrl = `https://drive.google.com/thumbnail?id=${textFile.id}&sz=w1200`;
+      storyText.setAttribute('data-src', textUrl);
+      storyText.src = textUrl;
     }
 
     // Contact icons — WA, IG, Mail images from logo folder
@@ -793,8 +808,9 @@ async function loadLogoFolder() {
     setIconSrc(['footer-mail'],                       mailFile);
 
   } catch(e) {
-    document.getElementById('header-name').style.display  = 'block';
-    document.getElementById('splash-soon').style.display  = 'block';
+    console.error('loadLogoFolder error:', e);
+    const sn = document.getElementById('splash-soon');
+    if (sn) sn.style.display = 'block';
   }
 }
 
