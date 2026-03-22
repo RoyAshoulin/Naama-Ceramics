@@ -44,6 +44,15 @@
       background: var(--bg);
       z-index: 100;
       direction: ltr;
+      gap: 8px;
+      min-width: 0;
+    }
+    #header-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      direction: ltr;
+      flex-shrink: 0;
     }
 
     #logo-wrap {
@@ -246,23 +255,30 @@
     /* ── TAG GALLERY on splash ── */
     #tag-gallery {
       width: 100%;
-      max-width: 1100px;
       padding: 40px 24px 60px;
       display: none;
     }
     .tag-gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
+      max-width: 980px;
+      margin: 0 auto;
     }
     .tag-tile {
       position: relative;
       border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
-      aspect-ratio: 1;
+      width: 220px;
+      height: 220px;
+      flex-shrink: 0;
       background: var(--border);
       transition: transform 0.25s, box-shadow 0.25s;
+    }
+    @media (max-width: 600px) {
+      .tag-tile { width: calc(50vw - 32px); height: calc(50vw - 32px); }
     }
     .tag-tile:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.15); }
     .tag-tile img {
@@ -391,9 +407,12 @@
     }
     /* ── MOBILE ── */
     @media (max-width: 600px) {
-      header { padding: 10px 16px; }
+      header { padding: 10px 12px; gap: 6px; }
       #site-logo { height: 38px; max-width: 120px; }
-      .shop-btn { padding: 9px 16px; font-size: 0.92rem; }
+      #header-home-text { font-size: 0.78rem; letter-spacing: 0.02em; }
+      .shop-btn { padding: 7px 10px; font-size: 0.78rem; }
+      .shop-btn svg { width: 10px; height: 10px; }
+      .story-btn { padding: 7px 10px; font-size: 0.78rem; }
       footer { padding: 16px 20px; }
     }
   </style>
@@ -431,18 +450,17 @@ const CONFIG = {
     <span id="header-home-text">Ceramics by Naama</span>
   </div>
 
-  <div id="header-nav" style="display:flex;align-items:center;gap:10px;direction:rtl;">
-  <button class="story-btn" onclick="showStory()">הסיפור שלי</button>
-  <!-- Shop dropdown (top right) -->
-  <div class="shop-dropdown" id="shop-dropdown">
-    <button class="shop-btn" id="shop-btn" onclick="toggleShopMenu()">
-      גלריה
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
-    <div class="dropdown-menu" id="dropdown-menu">
-      <!-- populated dynamically -->
+  <div id="header-nav">
+    <button class="story-btn" id="story-btn" onclick="showStory()">הסיפור שלי</button>
+    <div class="shop-dropdown" id="shop-dropdown">
+      <button class="shop-btn" id="shop-btn" onclick="toggleShopMenu()">
+        גלריה
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="dropdown-menu" id="dropdown-menu">
+        <!-- populated dynamically -->
+      </div>
     </div>
-  </div>
   </div>
 </header>
 
@@ -450,9 +468,6 @@ const CONFIG = {
   <!-- Splash / home -->
   <div id="splash">
     <img id="splash-logo" src="" alt="Ceramics by Naama"/>
-    <img id="splash-hero" src="" alt=""/>
-    <img id="splash-text-img" src="" alt=""/>
-    <div id="splash-soon">בקרוב...</div>
   </div>
   <div id="tag-gallery"><div class="tag-gallery-grid" id="tag-gallery-grid"></div></div>
 
